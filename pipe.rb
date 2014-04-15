@@ -1,7 +1,7 @@
-# a ruby 'pipe'
+# a Ruby 'pipe'
 # works like a queue but only accepts unique elements
-# and have a length of 100 items
-# modified based on https://gist.github.com/daddz/352509
+# and have a capacity of 100 items
+# Thanks to https://gist.github.com/daddz/352509
 
 class Pipe
 	
@@ -10,19 +10,24 @@ class Pipe
 	end
 
 	def push(obj)
+		# if the item is not in the file
 		if include?(obj) == false
 			safe_open('a') do |file|
 				file.write(obj + "\n")
 			end
 		end
 
+		## if the item has more than 100 elements
 		if length > 100
+			# pop (the oldest item)
 			pop
 		end
 	end
 
+	# pipe << item
 	alias << push
 
+	# returns whether the item is in the file
 	def include?(obj)
 		content = nil
 		safe_open('r') do |file|

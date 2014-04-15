@@ -1,6 +1,7 @@
 require 'twitter'
 require 'klout'
 require 'colorize'
+require_relative 'pipe.rb'
 
 system "clear"
 
@@ -57,6 +58,8 @@ puts "Topics to watch:"
 puts topics
 puts
 
+pipe = Pipe.new("pipe")
+
 while true
 	begin	
 		stream.filter(	:track => topics,
@@ -66,13 +69,16 @@ while true
 		print " "
 
 		if tweet.is_a?(Twitter::Tweet)
-			if tweet.text.count('#') < 4
-				if tweet.retweeted_status.id.to_s == ""
-					if tweet.in_reply_to_user_id == nil
-						if responsive?(tweet.user)
-							if influential?(tweet.user.screen_name)
-								rest.fav tweet
-								p_tweet(tweet)
+			if pipe.exclude?(tweet.user.screen_name)
+				if tweet.text.count('#') < 4
+					if tweet.retweeted_status.id.to_s == ""
+						if tweet.in_reply_to_user_id == nil
+							if responsive?(tweet.user)
+								if influential?(tweet.user.screen_name)
+									rest.fav tweet
+									p_tweet(tweet)
+									pipe. << tweet.user.screen_name
+								end
 							end
 						end
 					end
