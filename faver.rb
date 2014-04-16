@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'twitter'
 require 'klout'
 require 'colorize'
@@ -9,7 +11,7 @@ def puts_tweet(tweet)
 	user_info += "   (" +  klout_score(tweet.user.screen_name) + ")"
 	puts user_info.colorize(:white)
 	puts tweet.text.colorize(:light_white)
-	puts "*".bold.colorize(:yellow)
+	puts '★'.bold.colorize(:yellow)
 end
 
 def klout_score(screen_name)
