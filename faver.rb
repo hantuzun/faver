@@ -9,10 +9,10 @@ def responsive?(user)
 	user.followers_count < user.friends_count * 5
 end
 
-def klout_score(user)
-	klout_id = Klout::Identity.find_by_screen_name(user.screen_name)
-	
-	Klout::User.new(klout_id.id).score.score.to_i.to_s
+def klout_score(screen_name)
+	klout_id = Klout::Identity.find_by_screen_name(screen_name)
+	user = Klout::User.new(klout_id.id)
+	user.score.score.to_i.to_s
 
 	# Return 0 as the score if Klout returns an 404 Exception
 	# http://klout.com/s/developers/v2#errors
@@ -20,8 +20,8 @@ def klout_score(user)
 		0
 end 
 
-def influential?(user)
-	score = klout_score(user).to_i
+def influential?(screen_name)
+	score = klout_score(screen_name).to_i
 	50 <= score
 end
 
@@ -88,7 +88,7 @@ while true
 					if tweet.retweeted_status.id.to_s == ""
 						if tweet.in_reply_to_user_id == nil
 							if responsive?(tweet.user)
-								if influential?(tweet.user)
+								if influential?(tweet.user.screen_name)
 									rest.fav tweet
 									puts_tweet(tweet)
 									pipe << tweet.user.screen_name
