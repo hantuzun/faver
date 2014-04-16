@@ -5,13 +5,8 @@ require 'klout'
 require 'colorize'
 require_relative 'pipe.rb'
 
-def puts_tweet(tweet)
-	puts
-	user_info = tweet.user.name + "   @" + tweet.user.screen_name 
-	user_info += "   (" +  klout_score(tweet.user.screen_name) + ")"
-	puts user_info.colorize(:white)
-	puts tweet.text.colorize(:light_white)
-	puts '★'.bold.colorize(:yellow)
+def responsive?(user)
+	user.followers_count < user.friends_count * 5
 end
 
 def klout_score(screen_name)
@@ -30,17 +25,6 @@ def influential?(screen_name)
 	50 <= score
 end
 
-def responsive?(user)
-	user.followers_count < user.friends_count * 5
-end
-
-def puts_error()
-	puts
-	puts "<error>".colorize(:red)
-	puts $!.inspect.colorize(:red)
-	puts "</error>".colorize(:red)	
-end
-
 def puts_heading(topics)
 	system "clear"
 	puts "\t\t\t\t\t\t\t ★  faver ★".bold.colorize(:yellow)
@@ -48,6 +32,22 @@ def puts_heading(topics)
 	print "Watching topics: "
 	puts topics
 	puts
+end
+
+def puts_tweet(tweet)
+	puts
+	user_info = tweet.user.name + "   @" + tweet.user.screen_name 
+	user_info += "   (" +  klout_score(tweet.user.screen_name) + ")"
+	puts user_info.colorize(:white)
+	puts tweet.text.colorize(:light_white)
+	puts '★'.bold.colorize(:yellow)
+end
+
+def puts_error()
+	puts
+	puts "<error>".colorize(:red)
+	puts $!.inspect.colorize(:red)
+	puts "</error>".colorize(:red)	
 end
 
 ###############################################################################
