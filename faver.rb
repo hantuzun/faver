@@ -43,7 +43,8 @@ end
 
 def puts_heading(topics)
 	system "clear"
-	puts "\t\t\t\t\t\t\t\t ★  faver ★".bold.colorize(:yellow)
+	puts "\t\t\t\t\t\t\t ★  faver ★".bold.colorize(:yellow)
+	puts
 	print "Watching topics: "
 	puts topics
 	puts
