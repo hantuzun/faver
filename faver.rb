@@ -32,6 +32,13 @@ def responsive?(user)
 	user.followers_count < user.friends_count * 5
 end
 
+def puts_error
+	puts
+	puts "<error>".colorize(:red)
+	puts $!.inspect.colorize(:red)
+	puts "</error>".colorize(:red)	
+end
+
 ###############################################################################
 
 Klout.api_key = File.read('keys/klout_api_key')
@@ -64,9 +71,9 @@ pipe = Pipe.new("pipe")
 while true
 	begin	
 		stream.filter(	:track => topics,
-					:language => "en",
-					:filter_level => "medium"
-					) do |tweet|
+						:language => "en",
+						:filter_level => "medium"
+						) do |tweet|
 
 		if tweet.is_a?(Twitter::Tweet)
 			if pipe.exclude?(tweet.user.screen_name)
@@ -87,9 +94,6 @@ while true
 		end
 	end
 	rescue
-		puts
-		puts "<error>".colorize(:red)
-		puts $!.inspect.colorize(:red)
-		puts "</error>".colorize(:red)		
+		puts_error()	
 	end
 end
