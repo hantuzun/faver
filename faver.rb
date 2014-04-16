@@ -34,11 +34,19 @@ def responsive?(user)
 	user.followers_count < user.friends_count * 5
 end
 
-def puts_error
+def puts_error()
 	puts
 	puts "<error>".colorize(:red)
 	puts $!.inspect.colorize(:red)
 	puts "</error>".colorize(:red)	
+end
+
+def puts_heading(topics)
+	system "clear"
+	puts "\t\t\t\t\t\t\t\t ★  faver ★".bold.colorize(:yellow)
+	print "Watching topics: "
+	puts topics
+	puts
 end
 
 ###############################################################################
@@ -62,11 +70,7 @@ topics = ['#entrepreneurs', '#entrepreneurship', '#innovation',
 topics = topics.join(', ')
 
 # Initial display 
-system "clear"
-puts "* faver *".bold.colorize(:yellow)
-print "Watching topics: "
-puts topics
-puts
+puts_heading(topics)
 
 pipe = Pipe.new("pipe")
 
