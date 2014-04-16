@@ -3,9 +3,7 @@ require 'klout'
 require 'colorize'
 require_relative 'pipe.rb'
 
-system "clear"
-
-def p_tweet(tweet)
+def puts_tweet(tweet)
 	puts
 	user_info = tweet.user.name + "   @" + tweet.user.screen_name 
 	user_info += "   (" +  klout_score(tweet.user.screen_name) + ")"
@@ -34,6 +32,8 @@ def responsive?(user)
 	user.followers_count < user.friends_count * 5
 end
 
+###############################################################################
+
 Klout.api_key = File.read('keys/klout_api_key')
 
 config = {
@@ -46,15 +46,16 @@ config = {
 rest = Twitter::REST::Client.new config
 stream = Twitter::Streaming::Client.new(config)
 
-
 # topics to watch
-topics = ['#entrepreneurs', '#innovation', '#coding', 
-			'#startup', '#startups', '#socent', 
-			'#socialgood', '#entrepreneurship',
-			'#machinelearning', '#datascience']
+topics = ['#entrepreneurs', '#entrepreneurship', '#innovation', 
+		'#startup', '#startups', '#socent',	'#socialgood',
+		'#machinelearning', '#datascience']
 topics = topics.join(', ')
 
-puts "Topics to watch:"
+# Initial display 
+system "clear"
+puts "* faver *".bold.colorize(:yellow)
+print "Watching topics: "
 puts topics
 puts
 
@@ -63,10 +64,9 @@ pipe = Pipe.new("pipe")
 while true
 	begin	
 		stream.filter(	:track => topics,
-						:language => "en",
-						:filter_level => "medium"
-						) do |tweet|
-		print " "
+					:language => "en",
+					:filter_level => "medium"
+					) do |tweet|
 
 		if tweet.is_a?(Twitter::Tweet)
 			if pipe.exclude?(tweet.user.screen_name)
@@ -76,8 +76,8 @@ while true
 							if responsive?(tweet.user)
 								if influential?(tweet.user.screen_name)
 									rest.fav tweet
-									p_tweet(tweet)
-									pipe. << tweet.user.screen_name
+									puts_tweet(tweet)
+									pipe << tweet.user.screen_name
 								end
 							end
 						end
