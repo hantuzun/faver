@@ -61,6 +61,12 @@ end
 
 ###############################################################################
 
+Thread.new do
+  loop do
+    exit! if gets.chomp == 'q'
+  end
+end
+
 Klout.api_key = File.read('keys/klout_api_key')
 
 config = {
