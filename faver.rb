@@ -52,7 +52,7 @@ def puts_tweet(tweet)
 	puts '★'.bold.colorize(:yellow)
 end
 
-def puts_error()
+def puts_error
 	puts
 	puts "<error>".colorize(:red)
 	puts $!.inspect.colorize(:red)
@@ -116,6 +116,6 @@ while true
 		end
 	end
 	rescue
-		puts_error()	
+		puts_error
 	end
 end
