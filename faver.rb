@@ -6,9 +6,9 @@ require 'colorize'
 require 'open-uri'
 require_relative 'pipe.rb'
 
-def internet_connection?
+def connection?
 	begin
-		true if open("http://www.google.com/")
+		true if open("http://www.twitter.com/")
 	rescue
 		false
 	end
