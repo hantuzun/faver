@@ -3,7 +3,16 @@
 require 'twitter'
 require 'klout'
 require 'colorize'
+require 'open-uri'
 require_relative 'pipe.rb'
+
+def internet_connection?
+	begin
+		true if open("http://www.google.com/")
+	rescue
+		false
+	end
+end
 
 def responsive?(user)
 	user.followers_count < user.friends_count * 5
