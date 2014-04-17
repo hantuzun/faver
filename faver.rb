@@ -8,7 +8,7 @@ require_relative 'pipe.rb'
 
 def connection?
 	begin
-		true if open("http://www.twitter.com/")
+		true if open("https://www.twitter.com/")
 	rescue
 		false
 	end
@@ -65,6 +65,13 @@ Thread.new do
   loop do
     exit! if gets.chomp == 'q'
   end
+end
+
+until connection?
+	puts 
+	puts "Could not connect to twitter.com"
+	puts "trying again in 10 seconds"
+	sleep 10
 end
 
 Klout.api_key = File.read('keys/klout_api_key')
