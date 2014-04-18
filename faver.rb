@@ -106,7 +106,7 @@ while true
 
 		if tweet.is_a?(Twitter::Tweet)
 			if pipe.exclude?(tweet.user.screen_name)
-				if tweet.text.count('#') < 4
+				if tweet.text.count('#') <= 2
 					if tweet.retweeted_status.id.to_s == ""
 						if tweet.in_reply_to_user_id == nil
 							if responsive?(tweet.user)
