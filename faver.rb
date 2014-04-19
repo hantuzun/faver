@@ -63,9 +63,9 @@ end
 ###############################################################################
 
 Thread.new do
-  loop do
-    exit! if gets.chomp == 'q'
-  end
+	loop do
+		exit! if gets.chomp == 'q'
+	end
 end
 
 until connection?
