@@ -4,6 +4,7 @@ require 'twitter'
 require 'klout'
 require 'colorize'
 require 'open-uri'
+require 'ruby-xxhash'
 require_relative 'pipe.rb'
 
 def connection?
@@ -96,6 +97,7 @@ topics = topics.join(', ')
 puts_heading(topics)
 
 user_pipe = Pipe.new("user_pipe")
+tweet_pipe = Pipe.new("tweet_pipe")
 
 while true
 	begin	
@@ -106,15 +108,18 @@ while true
 
 		if tweet.is_a?(Twitter::Tweet)
 			if user_pipe.exclude?(tweet.user.screen_name)
-				if tweet.text.count('#') <= 2
-					if tweet.text.count('@') <= 2
-						if tweet.retweeted_status.id.to_s == ""
-							if tweet.in_reply_to_user_id == nil
-								if responsive?(tweet.user)
-									if influential?(tweet.user.screen_name)
-										rest.fav tweet
-										puts_tweet(tweet)
-										user_pipe << tweet.user.screen_name
+				if tweet_pipe.exclude?(XXhash.xxh32(tweet.text, 12345).to_s)
+					if tweet.text.count('#') <= 2
+						if tweet.text.count('@') <= 2
+							if tweet.retweeted_status.id.to_s == ""
+								if tweet.in_reply_to_user_id == nil
+									if responsive?(tweet.user)
+										if influential?(tweet.user.screen_name)
+											rest.fav tweet
+											puts_tweet(tweet)
+											user_pipe << tweet.user.screen_name
+											tweet_pipe << XXhash.xxh32(tweet.text, 12345).to_s
+										end
 									end
 								end
 							end
