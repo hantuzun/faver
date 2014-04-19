@@ -95,7 +95,7 @@ topics = topics.join(', ')
 # Initial display 
 puts_heading(topics)
 
-pipe = Pipe.new("pipe")
+user_pipe = Pipe.new("user_pipe")
 
 while true
 	begin	
@@ -105,15 +105,17 @@ while true
 						) do |tweet|
 
 		if tweet.is_a?(Twitter::Tweet)
-			if pipe.exclude?(tweet.user.screen_name)
+			if user_pipe.exclude?(tweet.user.screen_name)
 				if tweet.text.count('#') <= 2
-					if tweet.retweeted_status.id.to_s == ""
-						if tweet.in_reply_to_user_id == nil
-							if responsive?(tweet.user)
-								if influential?(tweet.user.screen_name)
-									rest.fav tweet
-									puts_tweet(tweet)
-									pipe << tweet.user.screen_name
+					if tweet.text.count('@') <= 2
+						if tweet.retweeted_status.id.to_s == ""
+							if tweet.in_reply_to_user_id == nil
+								if responsive?(tweet.user)
+									if influential?(tweet.user.screen_name)
+										rest.fav tweet
+										puts_tweet(tweet)
+										user_pipe << tweet.user.screen_name
+									end
 								end
 							end
 						end
