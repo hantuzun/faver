@@ -9,7 +9,7 @@ require_relative 'pipe.rb'
 
 def connection?
 	begin
-		true if open("https://api.twitter.com/")
+		true if open("https://www.twitter.com/")
 	rescue
 		false
 	end
@@ -69,7 +69,7 @@ Thread.new do
 	end
 end
 
-# Check the connection to the api.twitter.com
+# Check the connection to the www.twitter.com
 until connection?
 	puts 
 	puts "Could not connect to twitter.com"
