@@ -9,7 +9,7 @@ require_relative 'pipe.rb'
 
 def connection?
 	begin
-		true if open("https://www.twitter.com/")
+		true if open("https://api.twitter.com/")
 	rescue
 		false
 	end
