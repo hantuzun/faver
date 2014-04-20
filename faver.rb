@@ -62,12 +62,14 @@ end
 
 ###############################################################################
 
+# Quit the script after pressing 'q'
 Thread.new do
 	loop do
 		exit! if gets.chomp == 'q'
 	end
 end
 
+# Check the connection to the api.twitter.com
 until connection?
 	puts 
 	puts "Could not connect to twitter.com"
@@ -75,8 +77,10 @@ until connection?
 	sleep 10
 end
 
+# Klout API key is stored in /keys folder
 Klout.api_key = File.read('keys/klout_api_key')
 
+# Twitter API keys are stored in /keys folder
 config = {
 	consumer_key: File.read('keys/twitter_consumer_key'),
 	consumer_secret: File.read('keys/twitter_consumer_secret'),
@@ -84,6 +88,7 @@ config = {
 	access_token_secret: File.read('keys/twitter_access_token_secret') 
 }
 
+# Set up clients
 rest = Twitter::REST::Client.new config
 stream = Twitter::Streaming::Client.new(config)
 
@@ -96,9 +101,12 @@ topics = topics.join(', ')
 # Initial display 
 puts_heading(topics)
 
+# Create 'pipes' for tweets and users
+# Prevents favoriting same or same users' tweets
 user_pipe = Pipe.new("user_pipe")
 tweet_pipe = Pipe.new("tweet_pipe")
 
+# type 'q' to quit
 while true
 	begin	
 		stream.filter(	:track => topics,
