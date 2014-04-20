@@ -108,7 +108,7 @@ while true
 
 		if tweet.is_a?(Twitter::Tweet)
 			if user_pipe.exclude?(tweet.user.screen_name)
-				if tweet_pipe.exclude?(XXhash.xxh32(tweet.text, 12345).to_s)
+				if tweet_pipe.exclude?(XXhash.xxh32(tweet.text[0..40], 12345).to_s)
 					if tweet.text.count('#') <= 2
 						if tweet.text.count('@') <= 2
 							if tweet.retweeted_status.id.to_s == ""
@@ -118,7 +118,7 @@ while true
 											rest.fav tweet
 											puts_tweet(tweet)
 											user_pipe << tweet.user.screen_name
-											tweet_pipe << XXhash.xxh32(tweet.text, 12345).to_s
+											tweet_pipe << XXhash.xxh32(tweet.text[0..40], 12345).to_s
 										end
 									end
 								end
