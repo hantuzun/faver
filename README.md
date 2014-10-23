@@ -1,4 +1,4 @@
 # Faver
-## An intelligent Twitter bot 
+## A Twitter bot
 
-Faver favorites some tweets with specified hashtags. 
+Favourites tweets with specified hashtags.
